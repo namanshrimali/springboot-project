@@ -17,17 +17,17 @@ import java.util.Date;
 @Entity
 public class Project {
     @Id
-    String id;
+    private String id;
     @Column(name= "Name")
-    String projectName;
+    private String projectName;
     @Column(name= "Title")
-    String client;
+    private String client;
     @Column(name= "Date of Proposal")
-    Date proposedAt;
+    private Date proposedAt;
     @Column(name= "Start Status")
-    Boolean isStarted;
+    private Boolean isStarted;
     @Column(name= "Budget")
-    long budget;
+    private long budget;
     @Column(name = "Last Deployed")
-    Date lastDeployed;
+    private Date lastDeployed;
 }

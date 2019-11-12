@@ -23,6 +23,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project addOrUpdateProject(Project project) {
         return projectRepository.save(project);
+    }
 
+    public void deleteProject(String id) {
+        projectRepository.deleteById(id);
     }
 }

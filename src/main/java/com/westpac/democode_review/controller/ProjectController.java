@@ -84,7 +84,23 @@ public class ProjectController {
         project.setBudget(updatedProject.getBudget());
         project.setClient(updatedProject.getClient());
         project.setProjectName(updatedProject.getProjectName());
+        return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+    }
+    @DeleteMapping("/projects/{projectId}")
+    public ResponseEntity<HashMap<String, String>> deleteProject(@PathVariable String projectId) {
+        Project project = projectService.getProjectById(projectId);
+        HashMap  <String, String> result = new HashMap<>();
 
+        if(project == null) {
+            result.put("error", "true");
+            result.put("message", "No Projects Found");
+            result.put("timestamp", new Date().toString());
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        }
+        projectService.deleteProject(projectId);
+        result.put("error", "false");
+        result.put("message", "Project Deleted");
+        result.put("timestamp", new Date().toString());
         return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
     }
 }
