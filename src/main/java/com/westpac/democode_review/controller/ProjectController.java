@@ -27,11 +27,12 @@ public class ProjectController {
         if (projects == null) {
             result.put("message", "No Projects Found");
             result.put("error","true");
-        } else {
-            result.put("message", "Projects Found");
-            result.put("result", projects.toString());
-            result.put("error", "false");
+            result.put("timestamp", new Date().toString());
+            return new ResponseEntity<HashMap<String, String>>(result, HttpStatus.NOT_FOUND);
         }
+        result.put("message", "Projects Found");
+        result.put("result", projects.toString());
+        result.put("error", "false");
         result.put("timestamp", new Date().toString());
         return new ResponseEntity<HashMap<String, String>>(result, HttpStatus.OK);
     }
@@ -51,16 +52,39 @@ public class ProjectController {
     public ResponseEntity<HashMap<String, String>> updateLastDeployed(@PathVariable String projectId) {
         Project project = projectService.getProjectById(projectId);
         HashMap  <String, String> result = new HashMap<>();
+
         if(project == null) {
             result.put("error", "true");
             result.put("message", "No Projects Found");
-        } else {
-            project.setLastDeployed(new Date());
-            project = projectService.addOrUpdateProject(project);
-            result.put("result", project.toString());
-            result.put("error", "false");
+            result.put("timestamp", new Date().toString());
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+
         }
+        project.setLastDeployed(new Date());
+        project = projectService.addOrUpdateProject(project);
+        result.put("result", project.toString());
+        result.put("error", "false");
         result.put("timestamp", new Date().toString());
+        return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+    }
+    @PutMapping("/projects/{projectId}")
+    public ResponseEntity<HashMap<String, String>> updateProject(@PathVariable String projectId, @RequestBody Project updatedProject) {
+        Project project = projectService.getProjectById(projectId);
+        HashMap  <String, String> result = new HashMap<>();
+
+        if(project == null) {
+            result.put("error", "true");
+            result.put("message", "No Projects Found");
+            result.put("timestamp", new Date().toString());
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        }
+        project.setProposedAt(updatedProject.getProposedAt());
+        project.setIsStarted(updatedProject.getIsStarted());
+        project.setLastDeployed(updatedProject.getLastDeployed());
+        project.setBudget(updatedProject.getBudget());
+        project.setClient(updatedProject.getClient());
+        project.setProjectName(updatedProject.getProjectName());
+
         return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
     }
 }
