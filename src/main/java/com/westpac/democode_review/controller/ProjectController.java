@@ -1,5 +1,6 @@
 package com.westpac.democode_review.controller;
 
+import com.westpac.democode_review.exception.ProjectNotFoundException;
 import com.westpac.democode_review.model.Project;
 import com.westpac.democode_review.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +21,12 @@ public class ProjectController {
     ProjectService projectService;
 
     @GetMapping("/projects")
-    public ResponseEntity<HashMap<String, String>> getAllProjects () {
+    public ResponseEntity<HashMap<String, String>> getAllProjects () throws ProjectNotFoundException {
         List<Project> projects = new ArrayList<>();
         projects = projectService.getAllProjects();
         HashMap  <String, String> result = new HashMap<>();
         if (projects == null) {
-            result.put("message", "No Projects Found");
-            result.put("error","true");
-            result.put("timestamp", new Date().toString());
-            return new ResponseEntity<HashMap<String, String>>(result, HttpStatus.NOT_FOUND);
+            throw new ProjectNotFoundException();
         }
         result.put("message", "Projects Found");
         result.put("result", projects.toString());
@@ -49,16 +47,12 @@ public class ProjectController {
     }
 
     @PatchMapping("/projects/{projectId}/deploy")
-    public ResponseEntity<HashMap<String, String>> updateLastDeployed(@PathVariable String projectId) {
+    public ResponseEntity<HashMap<String, String>> updateLastDeployed(@PathVariable String projectId) throws ProjectNotFoundException{
         Project project = projectService.getProjectById(projectId);
         HashMap  <String, String> result = new HashMap<>();
 
         if(project == null) {
-            result.put("error", "true");
-            result.put("message", "No Projects Found");
-            result.put("timestamp", new Date().toString());
-            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
-
+            throw new ProjectNotFoundException(projectId);
         }
         project.setLastDeployed(new Date());
         project = projectService.addOrUpdateProject(project);
@@ -68,15 +62,12 @@ public class ProjectController {
         return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
     }
     @PutMapping("/projects/{projectId}")
-    public ResponseEntity<HashMap<String, String>> updateProject(@PathVariable String projectId, @RequestBody Project updatedProject) {
+    public ResponseEntity<HashMap<String, String>> updateProject(@PathVariable String projectId, @RequestBody Project updatedProject) throws ProjectNotFoundException{
         Project project = projectService.getProjectById(projectId);
         HashMap  <String, String> result = new HashMap<>();
 
         if(project == null) {
-            result.put("error", "true");
-            result.put("message", "No Projects Found");
-            result.put("timestamp", new Date().toString());
-            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+            throw new ProjectNotFoundException(projectId);
         }
         project.setProposedAt(updatedProject.getProposedAt());
         project.setIsStarted(updatedProject.getIsStarted());
@@ -87,15 +78,12 @@ public class ProjectController {
         return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
     }
     @DeleteMapping("/projects/{projectId}")
-    public ResponseEntity<HashMap<String, String>> deleteProject(@PathVariable String projectId) {
+    public ResponseEntity<HashMap<String, String>> deleteProject(@PathVariable String projectId) throws ProjectNotFoundException{
         Project project = projectService.getProjectById(projectId);
         HashMap  <String, String> result = new HashMap<>();
 
         if(project == null) {
-            result.put("error", "true");
-            result.put("message", "No Projects Found");
-            result.put("timestamp", new Date().toString());
-            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+            throw new ProjectNotFoundException(projectId);
         }
         projectService.deleteProject(projectId);
         result.put("error", "false");
