@@ -47,7 +47,7 @@ public class ProjectController {
     }
 
     @PatchMapping("/projects/{projectId}/deploy")
-    public ResponseEntity<HashMap<String, String>> updateLastDeployed(@PathVariable String projectId) throws ProjectNotFoundException{
+    public ResponseEntity<HashMap<String, String>> updateLastDeployed(@PathVariable int projectId) throws ProjectNotFoundException{
         Project project = projectService.getProjectById(projectId);
         HashMap  <String, String> result = new HashMap<>();
 
@@ -62,7 +62,7 @@ public class ProjectController {
         return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
     }
     @PutMapping("/projects/{projectId}")
-    public ResponseEntity<HashMap<String, String>> updateProject(@PathVariable String projectId, @RequestBody Project updatedProject) throws ProjectNotFoundException{
+    public ResponseEntity<HashMap<String, String>> updateProject(@PathVariable int projectId, @RequestBody Project updatedProject) throws ProjectNotFoundException{
         Project project = projectService.getProjectById(projectId);
         HashMap  <String, String> result = new HashMap<>();
 
@@ -74,11 +74,11 @@ public class ProjectController {
         project.setLastDeployed(updatedProject.getLastDeployed());
         project.setBudget(updatedProject.getBudget());
         project.setClient(updatedProject.getClient());
-        project.setProjectName(updatedProject.getProjectName());
+        project.setName(updatedProject.getName());
         return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
     }
     @DeleteMapping("/projects/{projectId}")
-    public ResponseEntity<HashMap<String, String>> deleteProject(@PathVariable String projectId) throws ProjectNotFoundException{
+    public ResponseEntity<HashMap<String, String>> deleteProject(@PathVariable int projectId) throws ProjectNotFoundException{
         Project project = projectService.getProjectById(projectId);
         HashMap  <String, String> result = new HashMap<>();
 
