@@ -4,9 +4,10 @@ import com.westpac.democode_review.model.Project;
 import com.westpac.democode_review.repository.ProjectRepository;
 import com.westpac.democode_review.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class ProjectServiceImpl implements ProjectService {
     @Autowired
     ProjectRepository projectRepository;
@@ -16,7 +17,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project getProjectById(String id) {
+    public Project getProjectById(int id) {
         return projectRepository.findById(id).get();
     }
 
@@ -25,7 +26,7 @@ public class ProjectServiceImpl implements ProjectService {
         return projectRepository.save(project);
     }
 
-    public void deleteProject(String id) {
+    public void deleteProject(int id) {
         projectRepository.deleteById(id);
     }
 }

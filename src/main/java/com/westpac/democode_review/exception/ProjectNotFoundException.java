@@ -5,7 +5,7 @@ public class ProjectNotFoundException extends Exception{
     public ProjectNotFoundException() {
         super("No Projects were found in our database");
     }
-    public ProjectNotFoundException(String id) {
+    public ProjectNotFoundException(int id) {
         super("No Project with id "+ id + " was found");
     }
 }

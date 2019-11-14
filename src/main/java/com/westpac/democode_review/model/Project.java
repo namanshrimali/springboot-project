@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Date;
 
@@ -17,17 +18,18 @@ import java.util.Date;
 @Entity
 public class Project {
     @Id
-    private String id;
-    @Column(name= "Name")
-    private String projectName;
-    @Column(name= "Title")
+    @GeneratedValue
+    private int id;
+    @Column(name= "name")
+    private String name;
+    @Column(name= "client")
     private String client;
-    @Column(name= "Date of Proposal")
+    @Column(name= "date_of_proposal")
     private Date proposedAt;
-    @Column(name= "Start Status")
+    @Column(name= "start_status")
     private Boolean isStarted;
-    @Column(name= "Budget")
+    @Column(name= "budget")
     private long budget;
-    @Column(name = "Last Deployed")
+    @Column(name = "last_deployed")
     private Date lastDeployed;
 }

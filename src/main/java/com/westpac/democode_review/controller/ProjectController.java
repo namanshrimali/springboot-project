@@ -23,9 +23,10 @@ public class ProjectController {
     @GetMapping("/projects")
     public ResponseEntity<HashMap<String, String>> getAllProjects () throws ProjectNotFoundException {
         List<Project> projects = new ArrayList<>();
-        projects = projectService.getAllProjects();
         HashMap  <String, String> result = new HashMap<>();
-        if (projects == null) {
+        try {
+            projects = projectService.getAllProjects();
+        }  catch (Exception exception) {
             throw new ProjectNotFoundException();
         }
         result.put("message", "Projects Found");
@@ -33,6 +34,23 @@ public class ProjectController {
         result.put("error", "false");
         result.put("timestamp", new Date().toString());
         return new ResponseEntity<HashMap<String, String>>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/projects/{projectId}")
+    public ResponseEntity<HashMap<String, String>> getProjectById(@PathVariable int projectId) throws ProjectNotFoundException{
+        Project project;
+        HashMap  <String, String> result = new HashMap<>();
+        try {
+            project = projectService.getProjectById(projectId);
+        } catch (Exception exception) {
+            throw new ProjectNotFoundException(projectId);
+        }
+
+        result.put("message", "Projects Found");
+        result.put("result", project.toString());
+        result.put("error", "false");
+        result.put("timestamp", new Date().toString());
+        return new ResponseEntity<>(result, HttpStatus.FOUND);
     }
 
     @PostMapping("/projects")
@@ -47,13 +65,16 @@ public class ProjectController {
     }
 
     @PatchMapping("/projects/{projectId}/deploy")
-    public ResponseEntity<HashMap<String, String>> updateLastDeployed(@PathVariable String projectId) throws ProjectNotFoundException{
-        Project project = projectService.getProjectById(projectId);
+    public ResponseEntity<HashMap<String, String>> updateLastDeployed(@PathVariable int projectId) throws ProjectNotFoundException{
+        Project project;
         HashMap  <String, String> result = new HashMap<>();
+        try {
+            project = projectService.getProjectById(projectId);
 
-        if(project == null) {
-            throw new ProjectNotFoundException(projectId);
+        } catch (Exception exception) {
+                throw new ProjectNotFoundException(projectId);
         }
+
         project.setLastDeployed(new Date());
         project = projectService.addOrUpdateProject(project);
         result.put("result", project.toString());
@@ -62,29 +83,40 @@ public class ProjectController {
         return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
     }
     @PutMapping("/projects/{projectId}")
-    public ResponseEntity<HashMap<String, String>> updateProject(@PathVariable String projectId, @RequestBody Project updatedProject) throws ProjectNotFoundException{
-        Project project = projectService.getProjectById(projectId);
+    public ResponseEntity<HashMap<String, String>> updateProject(@PathVariable int projectId, @RequestBody Project updatedProject) throws ProjectNotFoundException{
+        Project project;
         HashMap  <String, String> result = new HashMap<>();
-
-        if(project == null) {
+        try {
+            project = projectService.getProjectById(projectId);
+        } catch (Exception exception) {
             throw new ProjectNotFoundException(projectId);
         }
+
         project.setProposedAt(updatedProject.getProposedAt());
         project.setIsStarted(updatedProject.getIsStarted());
         project.setLastDeployed(updatedProject.getLastDeployed());
         project.setBudget(updatedProject.getBudget());
         project.setClient(updatedProject.getClient());
-        project.setProjectName(updatedProject.getProjectName());
+        project.setName(updatedProject.getName());
+
+        result.put("message", "Projects Found");
+        result.put("result", project.toString());
+        result.put("error", "false");
+        result.put("timestamp", new Date().toString());
         return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
     }
     @DeleteMapping("/projects/{projectId}")
-    public ResponseEntity<HashMap<String, String>> deleteProject(@PathVariable String projectId) throws ProjectNotFoundException{
-        Project project = projectService.getProjectById(projectId);
+    public ResponseEntity<HashMap<String, String>> deleteProject(@PathVariable int projectId) throws ProjectNotFoundException{
+
         HashMap  <String, String> result = new HashMap<>();
 
-        if(project == null) {
-            throw new ProjectNotFoundException(projectId);
-        }
+       try {
+           Project project = projectService.getProjectById(projectId);
+
+       } catch (Exception exception) {
+           throw new ProjectNotFoundException(projectId);
+           // log here
+       }
         projectService.deleteProject(projectId);
         result.put("error", "false");
         result.put("message", "Project Deleted");
