@@ -20,16 +20,16 @@ public class Project {
     @Id
     @GeneratedValue
     private int id;
-    @Column(name= "Name")
+    @Column(name= "name")
     private String name;
-    @Column(name= "Client")
+    @Column(name= "client")
     private String client;
-    @Column(name= "Date_of_Proposal")
+    @Column(name= "date_of_proposal")
     private Date proposedAt;
-    @Column(name= "Start_Status")
+    @Column(name= "start_status")
     private Boolean isStarted;
-    @Column(name= "Budget")
+    @Column(name= "budget")
     private long budget;
-    @Column(name = "Last_Deployed")
+    @Column(name = "last_deployed")
     private Date lastDeployed;
 }
