@@ -16,6 +16,11 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<sonar.projectKey>namanshrimali_springboot-project</sonar.projectKey>
+		<sonar.organization>namanshrimali</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.login>d9f03106c3cf3407a4a9a7f10ac4911b3466f7d4</sonar.login>
+
 	</properties>
 
 	<dependencies>
