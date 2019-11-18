@@ -16,11 +16,6 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<sonar.projectKey>namanshrimali_springboot-project</sonar.projectKey>
-		<sonar.organization>namanshrimali</sonar.organization>
-		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<sonar.login>d9f03106c3cf3407a4a9a7f10ac4911b3466f7d4</sonar.login>
-
 	</properties>
 
 	<dependencies>
@@ -54,7 +49,30 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>org.codehaus.sonar</groupId>
+			<artifactId>sonar-maven-plugin</artifactId>
+			<version>5.1</version>
+		</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>sonar</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!-- Optional URL to server. Default value is http://localhost:9000 -->
+				<sonar.host.url> http://localhost:9000 </sonar.host.url>
+				<sonar.jdbc.url>your database URL</sonar.jdbc.url>
+               	<sonar.jdbc.driver>com.mysql.jdbc.Driver</sonar.jdbc.driver>
+               	<sonar.jdbc.username>sonar</sonar.jdbc.username>
+               	<sonar.jdbc.password>P@ssword</sonar.jdbc.password>
+
+			</properties>
+		</profile>
+	</profiles>
 
 	<build>
 		<plugins>
