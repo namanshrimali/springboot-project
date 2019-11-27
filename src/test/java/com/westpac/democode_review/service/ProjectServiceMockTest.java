@@ -32,30 +32,32 @@ class ProjectServiceMockTest {
     private Project project;
     @BeforeEach
     void getAllProjectsOutput() {
-        List<Project> projects= new ArrayList<>(5);
         project = new Project();
-        project.setId((int)(Math.random()*10));
-        Page<Project> page = new PageImpl<>(projects);
-        randomId = (int)(Math.random()*10);
-        Optional<Project> optionalProject = Optional.of(project);
-        when(projectRepository.findAll(pageable)).thenReturn(page);
-        when(projectRepository.findById(randomId)).thenReturn(optionalProject);
-        when(projectRepository.save(project)).thenReturn(project);
     }
 
 
     @Test
     void getAllProjects() {
+        List<Project> projects= new ArrayList<>(5);
+        project = new Project();
+        project.setId((int)(Math.random()*10));
+        randomId = (int)(Math.random()*10);
+        Page<Project> page = new PageImpl<>(projects);
+        when(projectRepository.findAll(pageable)).thenReturn(page);
         assertTrue(projectService.getAllProjects(pageable).size() <= 5);
     }
 
     @Test
     void getProjectById() {
+        Optional<Project> optionalProject = Optional.of(project);
+        when(projectRepository.findById(randomId)).thenReturn(optionalProject);
+        System.out.println(projectService.getProjectById(randomId).isPresent());
         assertTrue(projectService.getProjectById(randomId).isPresent(), "If found, returned object must be of type Project");
     }
 
     @Test
     void addOrUpdateProject() {
+        when(projectRepository.save(project)).thenReturn(project);
         assertEquals("class com.westpac.democode_review.model.Project", ""+ projectService.addOrUpdateProject(project).getClass());
     }
 }

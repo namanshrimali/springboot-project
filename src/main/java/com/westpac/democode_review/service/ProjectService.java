@@ -2,8 +2,6 @@ package com.westpac.democode_review.service;
 
 import com.westpac.democode_review.model.Project;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 

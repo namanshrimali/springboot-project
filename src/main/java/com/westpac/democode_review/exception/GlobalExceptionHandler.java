@@ -18,11 +18,11 @@ public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
     @ExceptionHandler(ProjectNotFoundException.class)
     public ResponseEntity<HashMap<String, String>> handleProjectNotFound(ProjectNotFoundException projectNotFoundException) {
-        logger.warn("Exception occured :: requested project does not exists in the database " + "timestamp :: " +new Date());
+        logger.error("Exception occurred :: requested project does not exists in the database , timestamp :: {}" ,new Date());
         HashMap  <String, String> result = new HashMap<>();
         result.put("message", projectNotFoundException.getMessage());
         result.put("error","true");
         result.put("timestamp", new Date().toString());
-        return new ResponseEntity<HashMap<String, String>>(result, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
     }
 }
