@@ -16,7 +16,7 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectRepository projectRepository;
     @Override
     public List<Project> getAllProjects(Pageable pageable) {
-            return projectRepository.findAll(pageable).getContent();
+        return projectRepository.findAll(pageable).getContent();
     }
 
     @Override

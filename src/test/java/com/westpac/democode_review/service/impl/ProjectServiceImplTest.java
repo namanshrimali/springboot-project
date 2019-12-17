@@ -1,26 +1,27 @@
-package com.westpac.democode_review.service;
+package com.westpac.democode_review.service.impl;
 
 import com.westpac.democode_review.model.Project;
 import com.westpac.democode_review.repository.ProjectRepository;
-import com.westpac.democode_review.service.impl.ProjectServiceImpl;
+import com.westpac.democode_review.service.ProjectService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.*;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class ProjectServiceMockTest {
+class ProjectServiceImplTest {
     @Mock
     private ProjectRepository projectRepository;
 
@@ -34,7 +35,6 @@ class ProjectServiceMockTest {
     void getAllProjectsOutput() {
         project = new Project();
     }
-
 
     @Test
     void getAllProjects() {
@@ -51,7 +51,6 @@ class ProjectServiceMockTest {
     void getProjectById() {
         Optional<Project> optionalProject = Optional.of(project);
         when(projectRepository.findById(randomId)).thenReturn(optionalProject);
-        System.out.println(projectService.getProjectById(randomId).isPresent());
         assertTrue(projectService.getProjectById(randomId).isPresent(), "If found, returned object must be of type Project");
     }
 
@@ -59,5 +58,9 @@ class ProjectServiceMockTest {
     void addOrUpdateProject() {
         when(projectRepository.save(project)).thenReturn(project);
         assertEquals("class com.westpac.democode_review.model.Project", ""+ projectService.addOrUpdateProject(project).getClass());
+    }
+
+    @Test
+    void deleteProject() {
     }
 }
